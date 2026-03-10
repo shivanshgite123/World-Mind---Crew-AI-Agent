@@ -27,14 +27,14 @@ def run_news_crew(query: str) -> dict:
         dict with keys: summary (str), status (str), error (str|None)
     """
     try:
-        # ── LLM ──────────────────────────────────────────────────────────────
+        #  LLM 
         llm = get_gemini_llm(temperature=0.2)
 
-        # ── Tools ─────────────────────────────────────────────────────────────
+        # Tools 
         web_search_tool = WebSearchTool()
         rag_retrieve_tool = RAGRetrieveTool()
 
-        # ── Agent 1: News Research Specialist ─────────────────────────────────
+        # Agent 1: News Research Specialist 
         research_agent = Agent(
             role="News Research Specialist",
             goal=(
@@ -57,7 +57,7 @@ def run_news_crew(query: str) -> dict:
             max_iter=3,
         )
 
-        # ── Agent 2: News Analyst & Summarizer ────────────────────────────────
+        #  Agent 2: News Analyst & Summarizer 
         analyst_agent = Agent(
             role="News Analyst & Summarizer",
             goal=(
@@ -80,7 +80,7 @@ def run_news_crew(query: str) -> dict:
             max_iter=3,
         )
 
-        # ── Task 1: Research ───────────────────────────────────────────────────
+        #  Task 1: Research 
         research_task = Task(
             description=(
                 f"Search the web for the latest news about: '{query}'\n\n"
@@ -98,7 +98,7 @@ def run_news_crew(query: str) -> dict:
             agent=research_agent,
         )
 
-        # ── Task 2: Analyze & Summarize ────────────────────────────────────────
+        #  Task 2: Analyze & Summarize 
         analysis_task = Task(
             description=(
                 f"Retrieve all stored news about '{query}' from ChromaDB and "
@@ -121,7 +121,7 @@ def run_news_crew(query: str) -> dict:
             context=[research_task],
         )
 
-        # ── Crew ───────────────────────────────────────────────────────────────
+        #  Crew 
         crew = Crew(
             agents=[research_agent, analyst_agent],
             tasks=[research_task, analysis_task],
@@ -129,7 +129,7 @@ def run_news_crew(query: str) -> dict:
             verbose=True,
         )
 
-        # ── Kickoff ────────────────────────────────────────────────────────────
+        #  Kickoff 
         result = crew.kickoff(inputs={"query": query})
 
         # Handle both string and CrewOutput return types

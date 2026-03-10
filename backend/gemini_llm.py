@@ -33,5 +33,5 @@ def get_gemini_llm(model: str = "gemini-1.5-flash", temperature: float = 0.3):
         model=model,
         google_api_key=api_key,
         temperature=temperature,
-        convert_system_message_to_human=True,  # Gemini quirk
+        convert_system_message_to_human=True,  
     )

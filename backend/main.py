@@ -23,23 +23,23 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 
-# ── Lifespan ──────────────────────────────────────────────────────────────────
+#  Lifespan 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup: pre-warm the embedding model to avoid first-request lag."""
-    print("🚀 News Crew API starting up...")
+    print(" News Crew API starting up...")
     try:
         from rag_chain import get_embeddings
         get_embeddings()
-        print("✅ Embedding model loaded.")
+        print(" Embedding model loaded.")
     except Exception as e:
-        print(f"⚠️  Could not pre-warm embeddings: {e}")
+        print(f"  Could not pre-warm embeddings: {e}")
     yield
-    print("🛑 News Crew API shutting down.")
+    print(" News Crew API shutting down.")
 
 
-# ── App ───────────────────────────────────────────────────────────────────────
+#  App 
 
 app = FastAPI(
     title="News Crew Summarizer API",
@@ -52,14 +52,14 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Tighten in production
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-# ── Schemas ───────────────────────────────────────────────────────────────────
+#  Schemas 
 
 class SummarizeRequest(BaseModel):
     query: str = Field(
@@ -87,7 +87,7 @@ class HealthResponse(BaseModel):
     message: str
 
 
-# ── Routes ────────────────────────────────────────────────────────────────────
+#  Routes 
 
 @app.get("/", tags=["Health"])
 async def root():
@@ -109,9 +109,9 @@ async def health_check():
         gemini_key_set=gemini,
         chroma_dir_exists=os.path.exists(chroma_dir),
         message=(
-            "All systems operational ✅"
+            "All systems operational "
             if all_good
-            else "⚠️ Missing API keys — check your .env file"
+            else " Missing API keys — check your .env file"
         ),
     )
 

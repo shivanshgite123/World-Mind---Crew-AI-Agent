@@ -10,7 +10,7 @@ import requests
 import time
 from datetime import datetime
 
-# ── Page Config ───────────────────────────────────────────────────────────────
+#  Page Config 
 st.set_page_config(
     page_title="NewsCrew AI",
     page_icon="📡",
@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Styling ───────────────────────────────────────────────────────────────────
+#  Styling 
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -289,7 +289,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Constants ─────────────────────────────────────────────────────────────────
+#  Constants 
 BACKEND_URL = "http://localhost:8000"
 
 EXAMPLE_QUERIES = [
@@ -303,7 +303,7 @@ EXAMPLE_QUERIES = [
     "Cybersecurity threats 2024",
 ]
 
-# ── Session State ─────────────────────────────────────────────────────────────
+# Session State 
 if "history" not in st.session_state:
     st.session_state.history = []
 if "last_result" not in st.session_state:
@@ -312,7 +312,7 @@ if "query_input" not in st.session_state:
     st.session_state.query_input = ""
 
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+#  Sidebar 
 with st.sidebar:
     st.markdown("""
     <div style="padding: 1rem 0 0.5rem;">
@@ -329,17 +329,17 @@ with st.sidebar:
     <div style="margin: 1.5rem 0; font-size: 0.82rem; color: #64748b; line-height: 1.8;">
         <div style="color: #f59e0b; font-family: 'Space Mono', monospace; font-size: 0.68rem; 
                     letter-spacing: 1px; margin-bottom: 0.6rem;">FLOW</div>
-        <div>📥 User Query</div>
+        <div> User Query</div>
         <div style="color: #2d3748; margin: 0 0 0 0.5rem;">│</div>
-        <div>🔍 Tavily Web Search</div>
+        <div> Tavily Web Search</div>
         <div style="color: #2d3748; margin: 0 0 0 0.5rem;">│</div>
-        <div>🗃️ ChromaDB Storage</div>
+        <div> ChromaDB Storage</div>
         <div style="color: #2d3748; margin: 0 0 0 0.5rem;">│</div>
-        <div>🔎 Semantic Retrieval</div>
+        <div> Semantic Retrieval</div>
         <div style="color: #2d3748; margin: 0 0 0 0.5rem;">│</div>
-        <div>✨ Gemini Generation</div>
+        <div> Gemini Generation</div>
         <div style="color: #2d3748; margin: 0 0 0 0.5rem;">│</div>
-        <div>📰 Summary Output</div>
+        <div> Summary Output</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -352,12 +352,12 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     tech = [
-        ("🤖", "CrewAI", "Orchestration"),
-        ("🔍", "Tavily", "Web Search"),
-        ("🗃️", "ChromaDB", "Vector Store"),
-        ("🧠", "Gemini 1.5", "Generation"),
-        ("📐", "MiniLM-L6", "Embeddings"),
-        ("⚡", "FastAPI", "Backend"),
+        ( "CrewAI", "Orchestration"),
+        ( "Tavily", "Web Search"),
+        ( "ChromaDB", "Vector Store"),
+        ( "Gemini 1.5", "Generation"),
+        ( "MiniLM-L6", "Embeddings"),
+        ( "FastAPI", "Backend"),
     ]
     for icon, name, role in tech:
         st.markdown(f"""
@@ -390,7 +390,7 @@ with st.sidebar:
             """, unsafe_allow_html=True)
 
 
-# ── Main Content ──────────────────────────────────────────────────────────────
+# Main Content 
 
 # Header
 st.markdown("""
@@ -410,7 +410,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Search Interface ──────────────────────────────────────────────────────────
+#  Search Interface 
 col_input, col_btn = st.columns([4, 1])
 
 with col_input:
@@ -435,7 +435,7 @@ for i, example in enumerate(EXAMPLE_QUERIES):
             search_clicked = True
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ── Pipeline Execution ────────────────────────────────────────────────────────
+# Pipeline Execution 
 if search_clicked and query and query.strip():
     query = query.strip()
 
@@ -449,7 +449,7 @@ if search_clicked and query and query.strip():
         agent1_placeholder.markdown("""
         <div class="pipeline-card active">
             <div class="pipeline-label">Agent 1 · Running</div>
-            <div class="pipeline-title">🔍 News Research Specialist</div>
+            <div class="pipeline-title"> News Research Specialist</div>
             <div style="font-size:0.8rem; color:#64748b; margin-top:0.4rem;">
                 Searching Tavily → Ingesting to ChromaDB...
             </div>
@@ -461,7 +461,7 @@ if search_clicked and query and query.strip():
         agent2_placeholder.markdown("""
         <div class="pipeline-card">
             <div class="pipeline-label">Agent 2 · Waiting</div>
-            <div class="pipeline-title">📊 News Analyst & Summarizer</div>
+            <div class="pipeline-title"> News Analyst & Summarizer</div>
             <div style="font-size:0.8rem; color:#64748b; margin-top:0.4rem;">
                 Waiting for research to complete...
             </div>
@@ -495,7 +495,7 @@ if search_clicked and query and query.strip():
         agent1_placeholder.markdown("""
         <div class="pipeline-card done">
             <div class="pipeline-label">Agent 1 · Complete ✓</div>
-            <div class="pipeline-title">🔍 News Research Specialist</div>
+            <div class="pipeline-title"> News Research Specialist</div>
             <div style="font-size:0.8rem; color:#10b981; margin-top:0.4rem;">
                 Articles retrieved and stored in ChromaDB
             </div>
@@ -505,7 +505,7 @@ if search_clicked and query and query.strip():
         agent2_placeholder.markdown("""
         <div class="pipeline-card active">
             <div class="pipeline-label">Agent 2 · Running</div>
-            <div class="pipeline-title">📊 News Analyst & Summarizer</div>
+            <div class="pipeline-title"> News Analyst & Summarizer</div>
             <div style="font-size:0.8rem; color:#64748b; margin-top:0.4rem;">
                 Retrieving chunks → Generating summary via Gemini...
             </div>
@@ -521,11 +521,11 @@ if search_clicked and query and query.strip():
         if response.status_code == 200:
             data = response.json()
 
-            progress_bar.progress(100, text="✅ Pipeline complete!")
+            progress_bar.progress(100, text=" Pipeline complete!")
             agent2_placeholder.markdown("""
             <div class="pipeline-card done">
                 <div class="pipeline-label">Agent 2 · Complete ✓</div>
-                <div class="pipeline-title">📊 News Analyst & Summarizer</div>
+                <div class="pipeline-title"> News Analyst & Summarizer</div>
                 <div style="font-size:0.8rem; color:#10b981; margin-top:0.4rem;">
                     Summary generated successfully
                 </div>
@@ -591,7 +591,7 @@ if search_clicked and query and query.strip():
                 error_msg = data.get("error", "Unknown error")
                 st.markdown(f"""
                 <div class="error-box">
-                    ⚠️ Pipeline Error<br><br>{error_msg}
+                     Pipeline Error<br><br>{error_msg}
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -605,35 +605,35 @@ if search_clicked and query and query.strip():
             progress_bar.progress(100, text="❌ Request failed")
             st.markdown(f"""
             <div class="error-box">
-                ⚠️ API Error (HTTP {response.status_code})<br><br>
+                 API Error (HTTP {response.status_code})<br><br>
                 {error_detail}
             </div>
             """, unsafe_allow_html=True)
 
     except requests.exceptions.ConnectionError:
-        progress_bar.progress(100, text="❌ Connection failed")
+        progress_bar.progress(100, text=" Connection failed")
         st.markdown("""
         <div class="error-box">
-            ❌ Cannot connect to backend (http://localhost:8000)<br><br>
+             Cannot connect to backend (http://localhost:8000)<br><br>
             Make sure the FastAPI server is running:<br>
             <code>cd backend && uvicorn main:app --reload --port 8000</code>
         </div>
         """, unsafe_allow_html=True)
 
     except requests.exceptions.Timeout:
-        progress_bar.progress(100, text="❌ Request timed out")
+        progress_bar.progress(100, text=" Request timed out")
         st.markdown("""
         <div class="error-box">
-            ⏱️ Request timed out (>3 minutes)<br><br>
+            ⏱ Request timed out (>3 minutes)<br><br>
             The pipeline may still be running. Try a more specific query or check backend logs.
         </div>
         """, unsafe_allow_html=True)
 
     except Exception as e:
-        progress_bar.progress(100, text="❌ Unexpected error")
+        progress_bar.progress(100, text=" Unexpected error")
         st.markdown(f"""
         <div class="error-box">
-            💥 Unexpected Error<br><br>{str(e)}
+             Unexpected Error<br><br>{str(e)}
         </div>
         """, unsafe_allow_html=True)
 

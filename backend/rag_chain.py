@@ -20,12 +20,12 @@ from pydantic import Field
 
 load_dotenv()
 
-# ── Paths ────────────────────────────────────────────────────────────────────
+# Paths 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CHROMA_PERSIST_DIR = os.path.join(BASE_DIR, "data", "chromadb")
 COLLECTION_NAME = "news_articles"
 
-# ── Shared embedding model (loaded once) ─────────────────────────────────────
+#  Shared embedding model (loaded once) 
 _embeddings: Optional[HuggingFaceEmbeddings] = None
 
 
@@ -50,7 +50,7 @@ def get_vectorstore() -> Chroma:
     )
 
 
-# ── Tool 1: Web Search + ChromaDB Ingestion ───────────────────────────────────
+#  Tool 1: Web Search + ChromaDB Ingestion 
 
 class WebSearchTool(BaseTool):
     """
@@ -77,7 +77,7 @@ class WebSearchTool(BaseTool):
                 "Sign up free at https://tavily.com and add the key to .env"
             )
 
-        # ── Step 1: Search ────────────────────────────────────────────────────
+        #  Step 1: Search 
         try:
             client = TavilyClient(api_key=api_key)
             results = client.search(
@@ -92,7 +92,7 @@ class WebSearchTool(BaseTool):
         if not results.get("results"):
             return f"No results found for query: {query}"
 
-        # ── Step 2: Prepare documents ─────────────────────────────────────────
+        #  Step 2: Prepare documents 
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=800,
             chunk_overlap=100,
@@ -119,7 +119,7 @@ class WebSearchTool(BaseTool):
         if not docs:
             return "Search returned results but no extractable content."
 
-        # ── Step 3: Ingest into ChromaDB ──────────────────────────────────────
+        #  Step 3: Ingest into ChromaDB
         try:
             vs = get_vectorstore()
             vs.add_documents(docs)
@@ -129,13 +129,13 @@ class WebSearchTool(BaseTool):
 
         sources = list({r.get("title", r.get("url", "")) for r in results["results"]})
         return (
-            f"✅ Successfully ingested {len(docs)} document chunks from "
+            f" Successfully ingested {len(docs)} document chunks from "
             f"{len(results['results'])} sources into ChromaDB.\n"
             f"Sources: {', '.join(sources[:5])}"
         )
 
 
-# ── Tool 2: RAG Retrieval + Gemini Generation ─────────────────────────────────
+#  Tool 2: RAG Retrieval + Gemini Generation 
 
 class RAGRetrieveTool(BaseTool):
     """
@@ -161,7 +161,7 @@ class RAGRetrieveTool(BaseTool):
                 "Get a free key at https://aistudio.google.com"
             )
 
-        # ── Step 1: Retrieve from ChromaDB ────────────────────────────────────
+        # Step 1: Retrieve from ChromaDB 
         try:
             vs = get_vectorstore()
             retriever = vs.as_retriever(
@@ -178,7 +178,7 @@ class RAGRetrieveTool(BaseTool):
                 "Ensure the News Research Specialist has run first."
             )
 
-        # ── Step 2: Build context ─────────────────────────────────────────────
+        # Step 2: Build context 
         context_parts = []
         seen_sources = set()
         for doc in relevant_docs:
@@ -192,7 +192,7 @@ class RAGRetrieveTool(BaseTool):
 
         context = "\n\n---\n\n".join(context_parts)
 
-        # ── Step 3: Generate with Gemini ──────────────────────────────────────
+        #  Step 3: Generate with Gemini 
         prompt = f"""You are a world-class news analyst. Based ONLY on the provided news sources below, 
 create a comprehensive, well-structured news summary about: "{query}"
 
@@ -201,28 +201,28 @@ NEWS SOURCES:
 
 FORMAT YOUR RESPONSE AS FOLLOWS:
 
-## 📰 News Summary: {query}
+##  News Summary: {query}
 
-### 🔑 Key Highlights
+###  Key Highlights
 - [Most important point 1]
 - [Most important point 2]  
 - [Most important point 3]
 - [Most important point 4]
 - [Most important point 5]
 
-### 📊 Detailed Analysis
+###  Detailed Analysis
 [2-3 paragraphs with deeper context and analysis]
 
-### 🌍 Global Impact
+###  Global Impact
 - [Impact point 1]
 - [Impact point 2]
 - [Impact point 3]
 
-### 🔮 What to Watch
+### What to Watch
 - [Forward-looking point 1]
 - [Forward-looking point 2]
 
-### 📌 Sources Referenced
+###  Sources Referenced
 {chr(10).join(f'- {s}' for s in list(seen_sources)[:8])}
 
 Be factual, balanced, and base everything strictly on the provided sources."""
