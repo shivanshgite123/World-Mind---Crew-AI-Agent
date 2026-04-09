@@ -53,8 +53,8 @@ news-crew-app/
 
 ### 1. Get API Keys
 
-- **Tavily**: Sign up free at [tavily.com](https://tavily.com) (1000 searches/month free)
-- **Gemini**: Get key at [aistudio.google.com](https://aistudio.google.com) (free tier available)
+- **Tavily**: Sign up free at [tavily.com](https://tavily.com)
+- **Gemini**: Get key at [aistudio.google.com](https://aistudio.google.com) 
 
 ### 2. Configure Environment
 
@@ -86,7 +86,7 @@ uvicorn main:app --reload --port 8000
 streamlit run app.py
 ```
 
-Open your browser at **http://localhost:8501**
+
 
 ## API Reference
 
@@ -119,14 +119,14 @@ Response:
 
 ## Example Queries
 
-- `Latest AI breakthroughs 2024`
+- `Latest AI breakthroughs 2026`
 - `World political crisis today`
 - `New vaccine updates and healthcare news`
 - `Latest technology changes in IT industry`
 - `Global climate change updates`
 - `Stock market news today`
 - `Space exploration discoveries`
-- `Cybersecurity threats 2024`
+- `Cybersecurity threats 2026`
 
 ## How It Works
 
