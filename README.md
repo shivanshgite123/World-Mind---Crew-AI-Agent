@@ -144,11 +144,13 @@ Response:
    - Gemini generates a formatted Markdown summary
 5. **Output** → Summary returned through FastAPI → displayed in Streamlit
 
-## Performance
 
-- Typical pipeline time: **30–90 seconds** (depends on Tavily + Gemini latency)
-- ChromaDB persists between runs — searches accumulate over time
-- Embedding model is pre-warmed on backend startup
+<img width="1315" height="716" alt="Screenshot (13983)" src="https://github.com/user-attachments/assets/40bfcdd5-76df-4f33-bd16-8dfb65523215" />
+
+
+<img width="1318" height="722" alt="Screenshot (13984)" src="https://github.com/user-attachments/assets/3fd12b23-f1f7-4134-9d01-72a386069499" />
+
+
 
 
 
